@@ -1,0 +1,14 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+
+    <ul>
+        {% for wish in wish_lst %}
+            <li>{{ wish.title }}</li>
+        {% endfor %}
+    </ul>
+
+
+    <a href="{{ path('wish_add')}}">Ajouter</a>
+
+{% endblock %}

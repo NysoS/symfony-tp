@@ -12,7 +12,6 @@
 	<body></body>
 	<body>
 		{% set pathCur = app.request.get('_route') %}
-		{{pathCur}}
 		<!-- Responsive navbar-->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container px-5">
@@ -24,13 +23,13 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link {% if pathCur == 'home' %} active {% endif %}" aria-current="page" href="{{path('home')}}">Home</a>
+							<a class="nav-link" aria-current="page" href="">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% if pathCur == 'about' %} active {% endif %}" href="{{path('about')}}">About</a>
+							<a class="nav-link" href="">About</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% if pathCur == 'contact' %} active {% endif %}" href="{{path('contact')}}">Contact</a>
+							<a class="nav-link" href="">Contact</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#!">Services</a>
