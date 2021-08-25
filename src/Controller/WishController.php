@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Wish;
+use App\Form\WishType;
 use App\Repository\WishRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,7 +20,7 @@ class WishController extends AbstractController
     public function list(WishRepository $repo): Response
     {
 
-        $result = $repo->findAll(array('date_created' => 'ASC'));
+        $result = $repo->findBy(array('isPublished' => true),array('dateCreated' => 'DESC'));
 
         return $this->render('wish/hometp.html.twig', [
             'wish_lst' => $result,
@@ -28,21 +30,26 @@ class WishController extends AbstractController
     /**
      * @Route("/add", name="wish_add")
      */
-    public function addWish(EntityManagerInterface $em): Response
+    public function addWish(Request $req, EntityManagerInterface $em): Response
     {
         
         $wish = new Wish();
-        $wish->setTitle("vacances");
-        $wish->setDescription("preparer les affaires avant de partir");
-        $wish->setAuthor("Kristofer");
-        $wish->setIsPublished(1);
-        $dateImmutable = new DateTime("now");
-        $wish->setDateCreated($dateImmutable);
+        $wish->setDateCreated(new DateTime('now'));
+        $form = $this->createForm(WishType::class,$wish);
+        $form->handleRequest($req);
+        
+        if($form->isSubmitted()){
+            $em->persist($wish);
+            $em->flush();
 
-        $em->persist($wish);
-        $em->flush();
+            return $this->redirectToRoute("wish_list");
 
-        return $this->redirectToRoute("wish_list");
+        }
+
+
+        return $this->render('wish/formulaire_wish.html.twig', [
+            'form_wish' => $form->createView()
+        ]);
     }
 }
 
