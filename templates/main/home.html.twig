@@ -2,12 +2,37 @@
 
 {% block body %}
 
-    <h1>Home</h1>
+	<h1>Home</h1>
 
-     <ul>
-        {% for wish in wish_lst %}
-            <li><a href="{{path('details',{id:wish.id})}}">{{ wish.title }}</a></li>
-        {% endfor %}
-    </ul>
+	<table class="table table-striped table-dark">
+		<thead>
+			<tr>
+				<th>Titre</th>
+				<th>Categories</th>
+				<th>Detail</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for wish in wish_lst %}
+				<tr>
+					<td>{{ wish.title }}</td>
+					<td>{{ wish.categ.name }}</td>
+					<td>
+						<a class="btn btn-warning btn-sm" href="{{path('details',{id:wish.id})}}"><i class="fas fa-caret-down"></i></a>
+					</td>
+				</tr>
+				<tr>
+					{% if wish_detail is defined %}
+						{% if wish.id == wish_detail%}
+                            {% if wish.description != null %}
+                                <td colspan="3">{{ wish.description }}</td>
+                            {% endif %}
+						{% endif %}
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
 
 {% endblock %}

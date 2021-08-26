@@ -19,7 +19,7 @@ class MainController extends AbstractController
         $result = $repo->findBy(array('isPublished' => true), array('dateCreated' => 'DESC'));
 
         return $this->render('main/home.html.twig', [
-            'wish_lst' => $result,
+            'wish_lst' => $result
         ]);
     }
 
@@ -28,9 +28,13 @@ class MainController extends AbstractController
      */
     public function details(Wish $wish, WishRepository $repo): Response
     {
+
+        $result = $repo->findBy(array('isPublished' => true), array('dateCreated' => 'DESC'));
+
         if ($wish->getIsPublished()) {
-            return $this->render('main/contact.html.twig', [
-                'wish_detail' => $wish,
+            return $this->render('main/home.html.twig', [
+                'wish_lst' => $result,
+                'wish_detail' => $wish->getId()
             ]);
         }
 
