@@ -14,13 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WishController extends AbstractController
 {
-    /**
-     * @Route("/", name="wish_list")
+    
+
+      /**
+     * @Route("/admin", name="wish_list_admin")
      */
     public function list(WishRepository $repo): Response
     {
 
-        $result = $repo->findBy(array('isPublished' => true),array('dateCreated' => 'DESC'));
+        $result = $repo->findBy([],array('dateCreated' => 'DESC'));
 
         return $this->render('wish/hometp.html.twig', [
             'wish_lst' => $result,
@@ -28,7 +30,7 @@ class WishController extends AbstractController
     }
 
     /**
-     * @Route("/add", name="wish_add")
+     * @Route("/admin/add", name="wish_add_admin")
      */
     public function addWish(Request $req, EntityManagerInterface $em): Response
     {
@@ -38,12 +40,13 @@ class WishController extends AbstractController
         $form->handleRequest($req);
         
         if($form->isSubmitted()){
+            
             $wish->setDateCreated(new DateTime('now'));
             $wish->setIsPublished(true);
             $em->persist($wish);
             $em->flush();
 
-            return $this->redirectToRoute("wish_list");
+            return $this->redirectToRoute("wish_list_admin");
 
         }
 
@@ -51,6 +54,64 @@ class WishController extends AbstractController
         return $this->render('wish/formulaire_wish.html.twig', [
             'form_wish' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/admin/quickAdd", name="wish_quick_add_admin")
+     */
+    public function quickAddWish(Request $req, EntityManagerInterface $em): Response
+    {
+
+        $title = $req->get('title');
+
+        $wish = new Wish();
+        $wish->setTitle($title);
+        $wish->setDescription("");
+        $wish->setAuthor("");
+        $wish->setIsPublished(true);
+        $wish->setDateCreated(new DateTime('now'));
+
+        $em->persist($wish);
+        $em->flush();
+
+        return $this->redirectToRoute('wish_list_admin');
+        
+        
+    }
+
+    /**
+     * @Route("/admin/modifie/{id}", name="wish_modif_admin")
+     */
+    public function updateWish(Wish $wish, Request $req, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(WishType::class,$wish);
+        $form->handleRequest($req);
+        
+        if($form->isSubmitted()){
+            
+            $wish->setDateCreated(new DateTime('now'));
+            $em->flush();
+
+            return $this->redirectToRoute("wish_list_admin");
+
+        }
+
+
+        return $this->render('wish/formulaire_wish.html.twig', [
+            'form_wish' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/delete/{id}", name="wish_delete_admin")
+     */
+    public function deleteWish(Wish $wish, EntityManagerInterface $em): Response
+    {
+     
+            $em->remove($wish);
+            $em->flush();
+
+        return $this->redirectToRoute('wish_list_admin');
     }
 }
 
