@@ -8,10 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/main", name="main_")
+ */
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="list")
+     * @Route("", name="list")
      */
     public function list(WishRepository $repo): Response
     {
@@ -28,7 +31,6 @@ class MainController extends AbstractController
      */
     public function details(Wish $wish, WishRepository $repo): Response
     {
-
         $result = $repo->findBy(array('isPublished' => true), array('dateCreated' => 'DESC'));
 
         if ($wish->getIsPublished()) {
