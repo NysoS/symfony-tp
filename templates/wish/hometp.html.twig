@@ -7,6 +7,7 @@
             <tr>
                 <th>Titre</th>
                 <th>Categories</th>
+                <th>Auteur</th>
                 <th>Modif</th>
                 <th>Delete</th>
             </tr>
@@ -19,6 +20,9 @@
                     </td>
                     <td>
                         {{ wish.categ.name }}
+                    </td>
+                    <td>
+                        {{ wish.user.full() }}
                     </td>
                     <td>
                         <a class="btn btn-outline-warning btn-sm" href="{{path('wish_modif_admin', {id:wish.id})}}"><i class="fas fa-pen"></i></a>

@@ -30,7 +30,7 @@ class Wish
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $author;
+   // private $author;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -46,6 +46,11 @@ class Wish
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="wishes")
      */
     private $categ;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="wishes")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -76,7 +81,7 @@ class Wish
         return $this;
     }
 
-    public function getAuthor(): ?string
+   /* public function getAuthor(): ?string
     {
         return $this->author;
     }
@@ -86,7 +91,7 @@ class Wish
         $this->author = $author;
 
         return $this;
-    }
+    }*/
 
     public function getIsPublished(): ?bool
     {
@@ -120,6 +125,18 @@ class Wish
     public function setCateg(?Categorie $categ): self
     {
         $this->categ = $categ;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

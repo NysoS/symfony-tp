@@ -9,6 +9,7 @@
 			<tr>
 				<th>Titre</th>
 				<th>Categories</th>
+				<th>Auteur</th>
 				<th>Detail</th>
 			</tr>
 		</thead>
@@ -17,6 +18,7 @@
 				<tr>
 					<td>{{ wish.title }}</td>
 					<td>{{ wish.categ.name }}</td>
+					<td>{{ wish.user.full() }}</td>
 					<td>
 						<a class="btn btn-warning btn-sm" href="{{path('main_details',{id:wish.id})}}"><i class="fas fa-caret-down"></i></a>
 					</td>
@@ -25,7 +27,7 @@
 					{% if wish_detail is defined %}
 						{% if wish.id == wish_detail%}
                             {% if wish.description != null %}
-                                <td colspan="3">{{ wish.description }}</td>
+                                <td colspan="4">{{ wish.description }}</td>
                             {% endif %}
 						{% endif %}
 					{% endif %}
